@@ -9,14 +9,16 @@
 //variable dec
 int total_alarms = 0;
 int alarmTriggered = 0;
+time_t start, stop;
 
 void increment_alarm() {
   total_alarms += 1;
 }
 
-void sigint_handler(int signum) {
+void sigint_handler(int signum) {     //signal interrupt handler
+  stop = time(NULL);
   printf("\nTotal alarms occured in the code: %d\n", total_alarms);
-  printf("Hence, the program was executed for ~%d seconds.\n", total_alarms);
+  printf("The program was executed for %lf seconds.\n", (double)(stop-start));
   exit(0);
 }
 
@@ -26,6 +28,7 @@ void myhandler(int signum) {          //signal handler
 }
 
 int main(int argc, char * argv[]) {
+  start = time(NULL);
   signal(SIGALRM, myhandler);        //register handler to handle SIGALRM
   signal(SIGINT, sigint_handler);
 
